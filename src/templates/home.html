@@ -1,0 +1,111 @@
+<title>Home</title>
+
+<head>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.2/dist/leaflet.css" integrity="sha256-sA+zWATbFveLLNqWO2gtiw3HL/lh1giY/Inf1BJ0z14=" crossorigin="anonymous" />
+<script src="https://unpkg.com/leaflet@1.9.2/dist/leaflet.js" integrity="sha256-o9N1jGDZrf5tS+Ft4gbIK7mYMipq9lqpVJ91xHSyKhg=" crossorigin="anonymous"></script>
+<style>
+    header {
+        background-color: rgb(78, 128, 158);
+        padding: 45px;
+        font-size: 25px;
+        color: rgb(255, 255, 255);
+        padding-top: 20px;
+      }
+
+    nav {
+        float: left;
+        width: 20%;
+        height: 500px;
+        background: rgb(202, 230, 246);
+        padding: 20px;
+      }
+
+    nav ul {
+        list-style-type: none;
+        padding-left: 15;
+      } 
+
+    section::after {
+        content: "";
+        display: table;
+        clear: both;
+      }
+    
+    footer {
+        background-color: rgb(78, 128, 158);
+        padding: 20px;
+        text-align: center;
+        color: white;
+        font-weight: bold;
+      }
+
+    .button{
+        display: block;
+        width: 180px;
+        height: 25px;
+        background: #126a80;
+        padding: 10px;
+        text-align: center;
+        border-radius: 5px;
+        color: white;
+        line-height: 25px;
+        text-decoration: none;
+      }
+
+</style>
+</head>
+
+<body>
+<header>
+  <img src="{{ url_for('static', filename='img/logo.png') }}" style="float: right;" width="300px" height="auto">
+    <h2>Bienvenido, {{ current_user.fullname }}</h2>
+    <a class="button" href="{{ url_for('logout') }}">Cerrar sesión</a>
+</header>
+
+<section>
+    <nav>
+      
+      <form name="form" action="/gps" method="GET">
+        <input type="text" id="coords" name="coords" placeholder="Ingresa aquí tus coordenadas" size="30">
+        <input type="button" id="change-btn" value="Visualiza" onclick="getInput()">
+
+      </form>
+      <ul>
+        <form name="form" action="/gps" method="POST">
+          <input type="button" id="save-btn" value="Guardar" onclick="SaveCoords()">
+          <input type="button" id="del-btn" value="Borrar" onclick="DelCoords()">
+        </form>
+        <label for="crds">Coordenadas Guardadas</label>
+        <li>-Locación 1</li>
+        <li>-Locación 2</li>
+        <li>-Locación 3</li>
+      </ul>
+
+    </nav>
+    <center>
+    <div id="map" style="width: 1120px; height: 500px; padding:20px;"></div>
+        <script>
+
+            function getInput(){
+              var input = document.getElementById("coords").value;
+              if(isNan(input)) return 0;
+              var value = parseInt(input);
+            }
+
+            var map = L.map('map').setView([value]);
+
+            const tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                maxZoom: 19,
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+            }).addTo(map);
+
+        </script>
+    </center>
+    </section>
+</body>
+
+<footer>
+  <p style="font-size: 22px;">Proyecto hecho por Irarrázabal, Sepúlveda y Freixas</p>
+  <p>Facultad de Ingeniería, Universidad Andrés Bello</p>
+  <p>Noviembre 2022</p>
+</footer>
